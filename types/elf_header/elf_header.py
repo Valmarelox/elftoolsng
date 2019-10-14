@@ -1,6 +1,6 @@
 from types.elf_header.e_ident import EIdent
-from types.elf_struct import ElfStruct
-from types.elf_struct_property import ElfStructProperty as ESP
+from types.struct.elf_struct import ElfStruct
+from types.struct.elf_struct_property import ElfStructProperty as ESP
 from types.int.elf_int_16_type import ElfInt16Type
 from types.int.elf_int_32_type import ElfInt32Type
 

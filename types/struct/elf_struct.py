@@ -1,6 +1,6 @@
 import struct
 
-from types.elf_meta import ElfMeta
+from types.struct.elf_meta import ElfMeta
 from types.elf_type_base import ElfTypeBase
 from types.int.elf_int_32_type import ElfInt32Type
 from types.int.elf_int_64_type import ElfInt64Type

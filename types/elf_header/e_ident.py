@@ -1,7 +1,7 @@
 from types.elf_header.ei_class import EIClass
 from types.elf_header.ei_magic import EIMagic
-from types.elf_struct import ElfStruct
-from types.elf_struct_property import ElfStructProperty as ESP
+from types.struct.elf_struct import ElfStruct
+from types.struct.elf_struct_property import ElfStructProperty as ESP
 from types.int.elf_int_n_type import ElfIntNType
 
 
