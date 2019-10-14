@@ -6,76 +6,128 @@ from typing import Dict, Any
 
 
 class ElfStructProperty(object):
-    def __init__(self, name, index):
+    def __init__(self, name, type):
         super(ElfStructProperty, self).__init__()
         self.name = name
-        self.index = index
+        self.type = type
 
 
-class ElfMeta(type):
+class ElfTypeBase(object):
+    STRUCT = ''
 
-    def __call__(self, *args, **kwargs):
-        obj = super().__call__(*args, **kwargs)
+    def __init__(self, parent, offset):
+        self.parent = parent
+        self.elf = self.parent.elf
+        self.offset = offset
 
-        def make_generic_getter(index):
-            def _generic_getter(self):
-                return self.read()[index]
+    def raw_read(self):
+        return self.elf.raw_read(self.offset, self.size())
 
-            return _generic_getter
-
-        def make_generic_setter(index):
-            def _generic_setter(self, data):
-                read = list(self.read())
-                read[index] = data
-                return self.write(*read)
-
-            return _generic_setter
-
-        for index, prop in enumerate(obj.PROPERTIES):
-            getter = make_generic_getter(index)
-            setter = make_generic_setter(index)
-            #setattr(obj, '__' + prop + '_get', getter)
-            #setattr(obj, '__' + prop + '_set', setter)
-            setattr(obj, prop, property(MethodType(getter, obj),
-                                        MethodType(setter, obj)))
-
-        return obj
-
-
-class ElfStruct(object, metaclass=ElfMeta):
-    FORMAT = ''
-    IS_ELF64 = None
-    PROPERTIES: [str] = []
-
-    def __init__(self, elf):
-        """
-
-        :type elf: ELF
-        """
-        super().__init__()
-        self.elf = elf
+    def raw_write(self, data):
+        assert data is bytearray or data is bytes
+        return self.elf.raw_write(self.offset, self.size())
 
     @property
     def data(self):
-        return self.elf.raw_read(0, self.size())
+        x = struct.unpack(self.STRUCT, self.raw_read())
+        if not self.verify(*x):
+            print('Bad value in field {type}:{value}'.format(type=type(self), value=x))
+        if len(x) == 1:
+            x = x[0]
+        return x
 
-    def read(self):
-        return struct.unpack(self.format(), self.data)
+    def verify(self, *args):
+        return True
 
-    def write(self, *args):
-        return struct.pack(self.format(), *args)
-
-    @classmethod
-    def format(cls):
-        if cls.is_elf64():
-            return cls.FORMAT.replace('X', 'Q')
-        else:
-            return cls.FORMAT.replace('X', 'I')
+    @data.setter
+    def data(self, *args):
+        if not self.verify(*args):
+            assert False
+        self.raw_write(struct.pack(self.STRUCT, *args))
 
     @classmethod
     def size(cls):
-        return struct.calcsize(cls.format())
+        return struct.calcsize(cls.STRUCT)
 
-    @classmethod
-    def is_elf64(cls):
-        return cls.IS_ELF64
+
+class ArchIntMetaClass(type):
+    def __call__(cls, *args, **kwargs):
+        parent = args[0]
+        if parent.elf.is64bit:
+            return ElfInt64Type(*args, **kwargs)
+        else:
+            return ElfInt32Type(*args, **kwargs)
+
+
+class ElfIntNType(metaclass=ArchIntMetaClass):
+    STRUCT = 'X'
+
+
+class ElfInt8Type(ElfTypeBase):
+    STRUCT = 'B'
+
+
+class ElfInt16Type(ElfTypeBase):
+    STRUCT = 'H'
+
+
+class ElfInt32Type(ElfTypeBase):
+    STRUCT = 'I'
+
+
+class ElfInt64Type(ElfTypeBase):
+    STRUCT = 'Q'
+
+
+def ElfTypeBytes(size):
+    class ElfTypeBytes(ElfTypeBase):
+        STRUCT = '{}s'.format(size)
+    return ElfTypeBytes
+
+
+class ElfMeta(type):
+    def __call__(cls, *args, **kwargs):
+        def make_generic_getter(type, offset):
+            def _generic_getter(self):
+                return type(self, offset)
+
+            return _generic_getter
+
+        def make_generic_setter(type, offset):
+            def _generic_setter(self, data):
+                self.elf.raw_write(offset, data)
+
+            return _generic_setter
+
+        curr_offset = 0
+        parent = args[0]
+        for index, prop in enumerate(cls.PROPERTIES):
+            if prop.type == ElfIntNType:
+                prop.type = ElfInt64Type if parent.elf.is64bit else ElfInt32Type
+            getter = make_generic_getter(prop.type, parent.offset + curr_offset)
+            setter = make_generic_setter(prop.type, parent.offset + curr_offset)
+            setattr(cls, prop.name, property(getter,
+                                             setter))
+            curr_offset += prop.type.size()
+
+        obj = super().__call__(*args, **kwargs)
+        return obj
+
+
+class ElfStruct(ElfTypeBase, metaclass=ElfMeta):
+    PROPERTIES: [str] = []
+
+    def read(self):
+        return struct.unpack(self.format, self.data)
+
+    def write(self, *args):
+        self.elf.raw_write(self.offset, struct.pack(self.format, *args))
+
+    @property
+    def format(self):
+        f = '<' + ''.join(prop.type.STRUCT for prop in self.PROPERTIES)
+        if self.elf.is64bit:
+            format = f.replace(ElfIntNType.STRUCT, ElfInt64Type.STRUCT)
+        else:
+            format = f.replace(ElfIntNType.STRUCT, ElfInt32Type.STRUCT)
+        return format
