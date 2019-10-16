@@ -1,5 +1,5 @@
-from types.int.elf_int_64_type import ElfInt64Type
-from types.int.elf_int_32_type import ElfInt32Type
+from elf.types.int.elf_int_64_type import ElfInt64Type
+from elf.types.int.elf_int_32_type import ElfInt32Type
 
 
 class ArchIntMetaClass(type):

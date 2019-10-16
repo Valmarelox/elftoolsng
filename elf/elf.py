@@ -1,5 +1,5 @@
-from types.elf_header.ei_class import EIClass
-from types.elf_header.elf_header import ELFHeader
+from elf.types.elf_header.ei_class import EIClass
+from elf.types.elf_header.elf_header import ELFHeader
 
 
 class ELF(object):

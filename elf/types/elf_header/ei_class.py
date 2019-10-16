@@ -1,4 +1,4 @@
-from types.int.elf_int_8_type import ElfInt8Type
+from elf.types.int.elf_int_8_type import ElfInt8Type
 
 
 class EIClass(ElfInt8Type):
