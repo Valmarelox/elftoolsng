@@ -1,7 +1,7 @@
 from elf.types.elf_offset import ElfOffset
-from elf.types.elf_header.base.int import ElfInt32Type
-from elf.types.elf_header.base.int import ElfInt64Type
-from elf.types.elf_header.base.int import ElfIntNType
+from elf.types.base.int import ElfInt32Type
+from elf.types.base.int import ElfInt64Type
+from elf.types.base.int import ElfIntNType
 
 
 class ElfMeta(type):

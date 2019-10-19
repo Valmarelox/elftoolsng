@@ -1,12 +1,12 @@
 import struct
 
+from elf.types.base.struct.elf_meta import ElfMeta
 from elf.types.elf_offset import ElfOffset
-from elf.types.elf_header.base.struct.elf_meta import ElfMeta
 from elf.types.elf_type_base import ElfTypeBase
-from elf.types.elf_header.base.int import ElfInt32Type
-from elf.types.elf_header.base.int import ElfInt64Type
-from elf.types.elf_header.base.int import ElfIntNType
-from elf.types.elf_header.base.struct.elf_struct_property import ElfStructProperty
+from elf.types.base.int import ElfInt32Type
+from elf.types.base.int import ElfInt64Type
+from elf.types.base.int import ElfIntNType
+from elf.types.base.struct import ElfStructProperty
 from pprint import pformat
 
 

@@ -1,4 +1,4 @@
-from elf.types.elf_header.base.int import ElfInt32Enum
+from elf.types.base.int import ElfInt32Enum
 
 
 class EVersion(ElfInt32Enum):

@@ -1,11 +1,11 @@
 from elf.types.elf_header.e_machine import EMachine
 from elf.types.elf_header.e_type import EType
 from elf.types.elf_header.e_version import EVersion
-from elf.types.elf_header.base.int.elf_int_16_type import ElfInt16Type
-from elf.types.elf_header.base.int import ElfInt32Type
-from elf.types.elf_header.base.int import ElfIntNType
-from elf.types.elf_header.base.struct.elf_struct import ElfStruct
-from elf.types.elf_header.base.struct.elf_struct_property import ElfStructProperty as ESP
+from elf.types.base.int import ElfInt16Type
+from elf.types.base.int import ElfInt32Type
+from elf.types.base.int import ElfIntNType
+from elf.types.base.struct import ElfStruct
+from elf.types.base.struct import ElfStructProperty as ESP
 from elf.types.elf_header.ident.e_ident import EIdent
 
 

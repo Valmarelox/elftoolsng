@@ -1,4 +1,4 @@
-from elf.types.elf_header.base.int import ElfInt8Enum
+from elf.types.base.int import ElfInt8Enum
 
 
 class EIClass(ElfInt8Enum):

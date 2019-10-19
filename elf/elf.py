@@ -1,6 +1,24 @@
 from elf.types.elf_header.ident.ei_class import EIClass
 from elf.types.elf_header.elf_header import ELFHeader
+from elf.types.elf_header.section.section_header import ElfSectionHeader
 
+
+class ElfSections(object):
+    def __init__(self, elf):
+        self.elf = elf
+
+    def _get_section_by_index(self, index):
+        offset = self.elf.header.e_shoff + self.elf.header.e_shentsize * index
+        return ElfSectionHeader(self.elf, offset)
+
+    def __getitem__(self, item):
+        return self._get_section_by_index(item)
+
+    def __getattr__(self, item):
+        assert False
+
+    def __iter__(self):
+        pass
 
 class ELF(object):
     def __init__(self, data):
@@ -15,8 +33,9 @@ class ELF(object):
         # TODO: Hack to prevent recursions
         return ord(self._data[4:5]) == EIClass.ELFCLASS64
 
+    @property
     def sections(self):
-        pass
+        return ElfSections(self)
 
     def phdrs(self):
         pass
