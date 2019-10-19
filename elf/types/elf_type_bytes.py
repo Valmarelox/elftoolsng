@@ -1,7 +1,8 @@
-from types.elf_type_base import ElfTypeBase
+from elf.types.elf_type_base import ElfTypeBase
 
 
 def ElfTypeBytes(size):
     class ElfTypeBytes(ElfTypeBase):
-        STRUCT = '{}s'.format(size)
+        STRUCT = f'{size}s'
+
     return ElfTypeBytes

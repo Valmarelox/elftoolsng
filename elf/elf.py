@@ -1,4 +1,4 @@
-from elf.types.elf_header.ei_class import EIClass
+from elf.types.elf_header.ident.ei_class import EIClass
 from elf.types.elf_header.elf_header import ELFHeader
 
 
@@ -18,15 +18,18 @@ class ELF(object):
     def sections(self):
         pass
 
+    def phdrs(self):
+        pass
+
     def raw_read(self, offset, size):
-        return self._data[offset:offset + size]
+        end_offset = offset + size
+        return self._data[offset.calc(self):end_offset.calc(self)]
 
     def raw_write(self, offset, data):
         """
-
         :type data: bytearray
         """
-        self._data[offset:offset + len(data)] = data
+        self._data[offset.calc(self):offset.calc(self) + len(data)] = data
 
     @property
     def header(self):
@@ -39,3 +42,7 @@ class ELF(object):
     @property
     def elf(self):
         return self
+
+    @property
+    def data(self):
+        return self._data

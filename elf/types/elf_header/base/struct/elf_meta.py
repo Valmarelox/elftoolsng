@@ -1,6 +1,7 @@
-from types.int.elf_int_32_type import ElfInt32Type
-from types.int.elf_int_64_type import ElfInt64Type
-from types.int.elf_int_n_type import ElfIntNType
+from elf.types.elf_offset import ElfOffset
+from elf.types.elf_header.base.int import ElfInt32Type
+from elf.types.elf_header.base.int import ElfInt64Type
+from elf.types.elf_header.base.int import ElfIntNType
 
 
 class ElfMeta(type):
@@ -17,16 +18,15 @@ class ElfMeta(type):
 
             return _generic_setter
 
-        curr_offset = 0
         parent = args[0]
+        curr_offset = ElfOffset(parent.offset)
         for index, prop in enumerate(cls.PROPERTIES):
             if prop.type == ElfIntNType:
                 prop.type = ElfInt64Type if parent.elf.is64bit else ElfInt32Type
-            getter = make_generic_getter(prop.type, parent.offset + curr_offset)
-            setter = make_generic_setter(prop.type, parent.offset + curr_offset)
+            getter = make_generic_getter(prop.type, curr_offset)
+            setter = make_generic_setter(prop.type, curr_offset)
             setattr(cls, prop.name, property(getter,
                                              setter))
             curr_offset += prop.type.size()
 
-        obj = super().__call__(*args, **kwargs)
-        return obj
+        return super().__call__(*args, **kwargs)

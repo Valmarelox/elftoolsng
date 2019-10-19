@@ -1,4 +1,7 @@
 import struct
+from pprint import pformat
+
+from elf.types.elf_offset import ElfOffset
 
 
 class ElfTypeBase(object):
@@ -20,7 +23,7 @@ class ElfTypeBase(object):
     def data(self):
         x = struct.unpack(self.STRUCT, self.raw_read())
         if not self.verify(*x):
-            print('Bad value in field {type}:{value}'.format(type=type(self), value=x))
+            print(f'Bad value in field {type(self)}:{x}')
         if len(x) == 1:
             x = x[0]
         return x
@@ -35,5 +38,9 @@ class ElfTypeBase(object):
         self.raw_write(struct.pack(self.STRUCT, *args))
 
     @classmethod
-    def size(cls):
-        return struct.calcsize(cls.STRUCT)
+    def size(cls) -> ElfOffset:
+        return ElfOffset(struct.calcsize(cls.STRUCT))
+
+    def __repr__(self):
+        #return pformat({'Name': type(self).__name__, 'data': self.data})
+        return str(self.data)
