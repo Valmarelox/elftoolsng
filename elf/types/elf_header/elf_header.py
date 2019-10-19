@@ -24,6 +24,3 @@ class ELFHeader(ElfStruct):
                   ESP('e_shentsize', ElfInt16Type),
                   ESP('e_shnum', ElfInt16Type),
                   ESP('e_shstrndx', ElfInt16Type)]
-
-    def __init__(self, parent):
-        super().__init__(parent, parent.offset)

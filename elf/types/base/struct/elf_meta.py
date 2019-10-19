@@ -18,8 +18,8 @@ class ElfMeta(type):
 
             return _generic_setter
 
-        parent = args[0]
-        curr_offset = ElfOffset(parent.offset)
+        parent, start_offset = args
+        curr_offset = ElfOffset(start_offset)
         for index, prop in enumerate(cls.PROPERTIES):
             if prop.type == ElfIntNType:
                 prop.type = ElfInt64Type if parent.elf.is64bit else ElfInt32Type

@@ -1,6 +1,7 @@
 from elf.types.elf_header.ident.ei_class import EIClass
 from elf.types.elf_header.elf_header import ELFHeader
 from elf.types.elf_header.section.section_header import ElfSectionHeader
+from elf.types.elf_offset import ElfOffset
 
 
 class ElfSections(object):
@@ -8,7 +9,8 @@ class ElfSections(object):
         self.elf = elf
 
     def _get_section_by_index(self, index):
-        offset = self.elf.header.e_shoff + self.elf.header.e_shentsize * index
+        offset = int(self.elf.header.e_shoff.data) + int(self.elf.header.e_shentsize.data) * int(index)
+        print(f'Readin offset {offset}')
         return ElfSectionHeader(self.elf, offset)
 
     def __getitem__(self, item):
@@ -19,6 +21,7 @@ class ElfSections(object):
 
     def __iter__(self):
         pass
+
 
 class ELF(object):
     def __init__(self, data):
@@ -50,9 +53,13 @@ class ELF(object):
         """
         self._data[offset.calc(self):offset.calc(self) + len(data)] = data
 
+    def raw_read_string(self, offset):
+        read_end = self._data.find(b'\x00', offset.calc(self))
+        return self.raw_read(offset, ElfOffset(read_end) - offset)
+
     @property
     def header(self):
-        return ELFHeader(self)
+        return ELFHeader(self, self.offset)
 
     @property
     def offset(self):
