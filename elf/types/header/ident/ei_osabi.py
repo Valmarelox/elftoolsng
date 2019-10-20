@@ -1,8 +1,9 @@
-from elf.types.base.int import ElfInt8Enum
+from elf.types.base.enum import ElfInt8Enum
 
 
 class EIOSAbi(ElfInt8Enum):
-    VALS = ['ELFOSABI_NONE',
+    VALS = [
+            'ELFOSABI_NONE',
             'ELFOSABI_SYSV',
             'ELFOSABI_HPUX',
             'ELFOSABI_NETBSD',
@@ -13,4 +14,4 @@ class EIOSAbi(ElfInt8Enum):
             'ELFOSABI_TRU64',
             'ELFOSABI_ARM',
             'ELFOSABI_STANDALONE',
-            ]
+    ]

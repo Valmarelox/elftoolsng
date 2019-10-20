@@ -1,4 +1,4 @@
-from elf.types.base.int import ElfInt32Enum
+from elf.types.base.enum import ElfInt32Enum
 
 
 class SHType(ElfInt32Enum):

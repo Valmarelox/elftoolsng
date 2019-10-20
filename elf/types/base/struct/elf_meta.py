@@ -1,4 +1,4 @@
-from elf.types.elf_offset import ElfOffset
+from elf.types.base.elf_offset import ElfOffset
 from elf.types.base.int import ElfInt32Type
 from elf.types.base.int import ElfInt64Type
 from elf.types.base.int import ElfIntNType

@@ -1,12 +1,12 @@
-from elf.types.elf_header.e_machine import EMachine
-from elf.types.elf_header.e_type import EType
-from elf.types.elf_header.e_version import EVersion
 from elf.types.base.int import ElfInt16Type
 from elf.types.base.int import ElfInt32Type
 from elf.types.base.int import ElfIntNType
 from elf.types.base.struct import ElfStruct
 from elf.types.base.struct import ElfStructProperty as ESP
-from elf.types.elf_header.ident.e_ident import EIdent
+from elf.types.header.e_machine import EMachine
+from elf.types.header.e_type import EType
+from elf.types.header.e_version import EVersion
+from elf.types.header.ident.e_ident import EIdent
 
 
 class ELFHeader(ElfStruct):

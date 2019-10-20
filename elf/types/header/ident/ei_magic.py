@@ -1,4 +1,4 @@
-from elf.types.elf_type_bytes import ElfTypeBytes
+from elf.types.base.elf_type_bytes import ElfTypeBytes
 
 
 class EIMagic(ElfTypeBytes(4)):

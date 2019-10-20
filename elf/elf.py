@@ -1,7 +1,7 @@
-from elf.types.elf_header.ident.ei_class import EIClass
-from elf.types.elf_header.elf_header import ELFHeader
-from elf.types.elf_header.section.section_header import ElfSectionHeader
-from elf.types.elf_offset import ElfOffset
+from elf.types.base.elf_offset import ElfOffset
+from elf.types.header.elf_header import ELFHeader
+from elf.types.header.ident import EIClass
+from elf.types.section import ElfSectionHeader
 
 
 class ElfSections(object):
@@ -37,44 +37,41 @@ class ELF(object):
         self._data = bytearray(data)
 
     @property
-    def is64bit(self):
+    def is64bit(self) -> bool:
         # TODO: Hack to prevent recursions
         return ord(self._data[4:5]) == EIClass.ELFCLASS64
 
     @property
-    def sections(self):
+    def sections(self) -> ElfSections:
         return ElfSections(self)
 
     def phdrs(self):
         pass
 
-    def raw_read(self, offset, size):
+    def raw_read(self, offset: ElfOffset, size: ElfOffset) -> bytearray:
         end_offset = offset + size
-        return self._data[offset.calc(self):end_offset.calc(self)]
+        return self._data[offset.calc(self): end_offset.calc(self)]
 
-    def raw_write(self, offset, data):
-        """
-        :type data: bytearray
-        """
-        self._data[offset.calc(self):offset.calc(self) + len(data)] = data
+    def raw_write(self, offset: ElfOffset, data: bytearray):
+        self._data[offset.calc(self): offset.calc(self) + len(data)] = data
 
     def raw_read_string(self, offset):
         read_end = self._data.find(b'\x00', offset.calc(self))
         return self.raw_read(offset, ElfOffset(read_end) - offset)
 
     @property
-    def header(self):
+    def header(self) -> ELFHeader:
         return ELFHeader(self, self.offset)
 
     @property
-    def offset(self):
-        return 0
+    def offset(self) -> ElfOffset:
+        return ElfOffset(0)
 
     @property
     def elf(self):
         return self
 
     @property
-    def data(self):
+    def data(self) -> bytearray:
         return self._data
 

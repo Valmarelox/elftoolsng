@@ -1,8 +1,8 @@
 import struct
 
 from elf.types.base.struct.elf_meta import ElfMeta
-from elf.types.elf_offset import ElfOffset
-from elf.types.elf_type_base import ElfTypeBase
+from elf.types.base.elf_offset import ElfOffset
+from elf.types.base.elf_type_base import ElfTypeBase
 from elf.types.base.int import ElfInt32Type
 from elf.types.base.int import ElfInt64Type
 from elf.types.base.int import ElfIntNType

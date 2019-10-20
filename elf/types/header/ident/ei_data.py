@@ -1,4 +1,4 @@
-from elf.types.base.int import ElfInt8Enum
+from elf.types.base.enum import ElfInt8Enum
 
 
 class EIData(ElfInt8Enum):

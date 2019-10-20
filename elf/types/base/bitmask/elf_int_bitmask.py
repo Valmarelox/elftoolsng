@@ -1,6 +1,6 @@
 from elf.types.base.int import ElfInt8Type, ElfInt16Type, ElfInt32Type, ElfInt64Type, ElfIntNType
 from elf.types.base.int.arch_int_meta_class import ArchIntMetaClass
-from elf.types.elf_type_base import ElfTypeBase
+from elf.types.base.elf_type_base import ElfTypeBase
 
 
 class BitMaskMeta(type):

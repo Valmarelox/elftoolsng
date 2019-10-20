@@ -1,4 +1,4 @@
-from elf.types.base.int import ElfInt16Enum
+from elf.types.base.enum import ElfInt16Enum
 
 
 class EType(ElfInt16Enum):

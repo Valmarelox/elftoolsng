@@ -1,7 +1,7 @@
 import pytest
 
 from elf.elf import ELF
-from elf.types.elf_header.e_machine import EMachine
+from elf.types.header.e_machine import EMachine
 
 
 def arm_binary():

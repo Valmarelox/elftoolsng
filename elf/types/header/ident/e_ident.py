@@ -1,12 +1,6 @@
-from elf.types.elf_header.ident.ei_abiversion import EIAbiVersion
-from elf.types.elf_header.ident.ei_osabi import EIOSAbi
-from elf.types.elf_header.ident.ei_class import EIClass
-from elf.types.elf_header.ident.ei_data import EIData
-from elf.types.elf_header.ident.ei_magic import EIMagic
-from elf.types.elf_header.ident.ei_pad import EIPad
-from elf.types.elf_header.ident.ei_version import EIVersion
 from elf.types.base.struct import ElfStruct
 from elf.types.base.struct import ElfStructProperty as ESP
+from elf.types.header.ident import EIMagic, EIClass, EIData, EIVersion, EIOSAbi, EIAbiVersion, EIPad
 
 
 class EIdent(ElfStruct):
