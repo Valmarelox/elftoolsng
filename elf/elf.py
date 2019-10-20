@@ -10,13 +10,12 @@ class ElfSections(object):
 
     def _get_section_by_index(self, index) -> ElfSectionHeader:
         offset = int(self.elf.header.e_shoff.data) + int(self.elf.header.e_shentsize.data) * int(index)
-        print(f'Readin offset {offset}')
         return ElfSectionHeader(self.elf, offset)
 
     def __getitem__(self, item) -> ElfSectionHeader:
-        if isinstance(item, str):
+        if isinstance(item, bytes):
             for sec in self:
-                if str(sec.sh_name) == item:
+                if bytes(sec.sh_name) == item:
                     return sec
             else:
                 raise KeyError()
@@ -33,10 +32,7 @@ class ElfSections(object):
 
 
 class ELF(object):
-    def __init__(self, data):
-        """
-        :type data: bytes
-        """
+    def __init__(self, data: bytes):
         super(ELF, self).__init__()
         self._data = bytearray(data)
 
@@ -81,3 +77,4 @@ class ELF(object):
     @property
     def data(self):
         return self._data
+

@@ -31,6 +31,16 @@ class ElfTypeBase(object):
     def verify(self, *args):
         return True
 
+    def __eq__(self, other):
+        if isinstance(other, ElfTypeBase):
+            return self.data == other.data
+        else:
+            return self.data == other
+
+    @property
+    def valid(self):
+        return self.verify(self.data)
+
     @data.setter
     def data(self, *args):
         if not self.verify(*args):
@@ -42,5 +52,5 @@ class ElfTypeBase(object):
         return ElfOffset(struct.calcsize(cls.STRUCT))
 
     def __repr__(self):
-        #return pformat({'Name': type(self).__name__, 'data': self.data})
+        # return pformat({'Name': type(self).__name__, 'data': self.data})
         return str(self.data)

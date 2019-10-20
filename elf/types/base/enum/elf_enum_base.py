@@ -1,9 +1,3 @@
-from elf.types.base.int.elf_int_16_type import ElfInt16Type
-from elf.types.base.int.elf_int_32_type import ElfInt32Type
-from elf.types.base.int.elf_int_64_type import ElfInt64Type
-from elf.types.base.int.elf_int_8_type import ElfInt8Type
-
-
 class EnumValsMeta(type):
     VALS: [int] = []
 
@@ -30,20 +24,7 @@ class EnumMixin(object):
             return 0 <= val <= len(self.VALS)
 
     def __repr__(self):
-        return self.VALS[self.data]
-
-
-class ElfInt8Enum(EnumMixin, ElfInt8Type, metaclass=EnumValsMeta):
-    pass
-
-
-class ElfInt16Enum(EnumMixin, ElfInt16Type, metaclass=EnumValsMeta):
-    pass
-
-
-class ElfInt32Enum(EnumMixin, ElfInt32Type, metaclass=EnumValsMeta):
-    pass
-
-
-class ElfInt64Enum(EnumMixin, ElfInt64Type, metaclass=EnumValsMeta):
-    pass
+        try:
+            return self.VALS[self.data]
+        except KeyError:
+            raise KeyError(f'Value {self.data} not found in {self.VALS}')
