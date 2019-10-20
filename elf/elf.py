@@ -8,19 +8,28 @@ class ElfSections(object):
     def __init__(self, elf):
         self.elf = elf
 
-    def _get_section_by_index(self, index):
+    def _get_section_by_index(self, index) -> ElfSectionHeader:
         offset = int(self.elf.header.e_shoff.data) + int(self.elf.header.e_shentsize.data) * int(index)
         print(f'Readin offset {offset}')
         return ElfSectionHeader(self.elf, offset)
 
-    def __getitem__(self, item):
-        return self._get_section_by_index(item)
+    def __getitem__(self, item) -> ElfSectionHeader:
+        if isinstance(item, str):
+            for sec in self:
+                if str(sec.sh_name) == item:
+                    return sec
+            else:
+                raise KeyError()
+        else:
+            return self._get_section_by_index(item)
 
     def __getattr__(self, item):
         assert False
 
     def __iter__(self):
-        pass
+        count = self.elf.header.e_shnum
+        for i in range(int(count)):
+            yield self._get_section_by_index(i)
 
 
 class ELF(object):
