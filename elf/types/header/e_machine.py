@@ -2,7 +2,7 @@ from elf.types.base.enum import ElfInt16Enum
 
 
 class EMachine(ElfInt16Enum):
-    VALS = {
+    VALUES = {
             0: 'EM_NONE',
             1: 'EM_M32',
             2: 'EM_SPARC',

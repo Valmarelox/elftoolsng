@@ -2,7 +2,7 @@ from elf.types.base.enum import ElfInt8Enum
 
 
 class EIClass(ElfInt8Enum):
-    VALS = [
+    VALUES = [
         'ELFCLASSNONE',
         'ELFCLASS32',
         'ELFCLASS64',

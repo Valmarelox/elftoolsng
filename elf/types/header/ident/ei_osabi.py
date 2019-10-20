@@ -2,7 +2,7 @@ from elf.types.base.enum import ElfInt8Enum
 
 
 class EIOSAbi(ElfInt8Enum):
-    VALS = [
+    VALUES = [
             'ELFOSABI_NONE',
             'ELFOSABI_SYSV',
             'ELFOSABI_HPUX',

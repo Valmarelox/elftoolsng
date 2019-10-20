@@ -1,30 +1,33 @@
-class EnumValsMeta(type):
-    VALS: [int] = []
+from elf.types.base.elf_type_base import ElfTypeBase
 
-    def __init__(mcs, name, bases, dct):
-        if isinstance(mcs.VALS, dict):
-            for (value, name) in mcs.VALS.items():
-                setattr(mcs, name, value)
+
+class EnumValuesMeta(type):
+    VALUES: [int] = []
+
+    def __init__(cls, name, bases, dct):
+        if isinstance(cls.VALUES, dict):
+            for (value, name) in cls.VALUES.items():
+                setattr(cls, name, value)
         else:
-            for i, val in enumerate(mcs.VALS):
-                setattr(mcs, val, i)
+            for i, val in enumerate(cls.VALUES):
+                setattr(cls, val, i)
 
         super().__init__(name, bases, dct)
 
 
-class EnumMixin(object):
-    VALS = []
+class EnumMixin(ElfTypeBase):
+    VALUES = []
 
     def verify(self, val):
         if not super().verify(val):
             return False
-        if isinstance(self.VALS, dict):
-            return val in self.VALS
+        if isinstance(self.VALUES, dict):
+            return val in self.VALUES
         else:
-            return 0 <= val <= len(self.VALS)
+            return 0 <= val <= len(self.VALUES)
 
     def __repr__(self):
         try:
-            return self.VALS[self.data]
+            return self.VALUES[self.data]
         except KeyError:
-            raise KeyError(f'Value {self.data} not found in {self.VALS}')
+            raise KeyError(f'Value {self.data} not found in {self.VALUES}')

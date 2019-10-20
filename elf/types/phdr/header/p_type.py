@@ -2,7 +2,7 @@ from elf.types.base.enum.elf_int_n_enum import ElfIntNEnum
 
 
 class PType(ElfIntNEnum):
-    VALS = {
+    VALUES = {
         0: 'PT_NULL',
         1: 'PT_LOAD',
         2: 'PT_DYNAMIC',

@@ -3,9 +3,9 @@ from elf.types.base.elf_offset import ElfOffset
 
 class ElfMeta(type):
     def __call__(cls, *args, **kwargs):
-        def make_generic_getter(type, offset):
+        def make_generic_getter(t, offset):
             def _generic_getter(self):
-                return type(self, offset)
+                return t(self, offset)
 
             return _generic_getter
 

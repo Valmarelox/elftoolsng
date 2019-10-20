@@ -22,7 +22,7 @@ class ElfTypeBase(object):
     def data(self):
         x = struct.unpack(self.STRUCT, self.raw_read())
         if not self.verify(*x):
-            #print(f'Bad value in field {type(self)}:{x}')
+            # print(f'Bad value in field {type(self)}:{x}')
             pass
         if len(x) == 1:
             x = x[0]

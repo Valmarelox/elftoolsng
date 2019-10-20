@@ -5,10 +5,10 @@ from elf.types.base.elf_type_base import ElfTypeBase
 class BitMaskMeta(type):
     BITS: ['str'] = []
 
-    def __init__(mcs, name, bases, dct):
-        for i, val in enumerate(mcs.BITS):
+    def __init__(cls, name, bases, dct):
+        for i, val in enumerate(cls.BITS):
             if val is not None:
-                setattr(mcs, val, i)
+                setattr(cls, val, i)
         super().__init__(name, bases, dct)
 
 

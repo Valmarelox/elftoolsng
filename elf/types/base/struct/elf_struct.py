@@ -23,10 +23,9 @@ class ElfStruct(ElfTypeBase, metaclass=ElfMeta):
     def format(self):
         f = '<' + ''.join(prop.type.STRUCT for prop in self.PROPERTIES)
         if self.elf.is64bit:
-            format = f.replace(ElfIntNType.STRUCT, ElfInt64Type.STRUCT)
+            return f.replace(ElfIntNType.STRUCT, ElfInt64Type.STRUCT)
         else:
-            format = f.replace(ElfIntNType.STRUCT, ElfInt32Type.STRUCT)
-        return format
+            return f.replace(ElfIntNType.STRUCT, ElfInt32Type.STRUCT)
 
     def __repr__(self):
         return pformat({'name': type(self).__name__,
