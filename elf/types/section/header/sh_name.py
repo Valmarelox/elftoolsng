@@ -15,5 +15,8 @@ class SHName(ElfInt32Type):
         else:
             return super().__eq__(other)
 
+    def __str__(self):
+        return str(bytes(self), 'ascii')
+
     def __repr__(self):
-        return bytes(self)
+        return str(self)

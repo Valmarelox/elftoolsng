@@ -1,4 +1,3 @@
-from elf.types.base.int import ElfInt8Type, ElfInt16Type, ElfInt32Type, ElfInt64Type, ElfIntNType
 from elf.types.base.int.arch_int_meta_class import ArchIntMetaClass
 from elf.types.base.elf_type_base import ElfTypeBase
 
@@ -11,14 +10,6 @@ class BitMaskMeta(type):
             if val is not None:
                 setattr(mcs, val, i)
         super().__init__(name, bases, dct)
-
-    def __repr__(self):
-        bits = []
-        data = self.data
-        for index, bit in enumerate(self.BITS):
-            if data & (1 << index):
-                bits.append(bit)
-        return '|'.join(bits)
 
 
 class IntNBitMaskMeta(ArchIntMetaClass, BitMaskMeta):
@@ -37,25 +28,15 @@ class BitMaskMixin(ElfTypeBase, metaclass=BitMaskMeta):
 
         return mask
 
+    def __repr__(self):
+        bits = []
+        data = self.data
+        for index, bit in enumerate(self.BITS):
+            if data & (1 << index):
+                bits.append(bit)
+        return '|'.join(bits)
+
     def verify(self, val):
         return super().verify(val) and val & self._get_full_mask() == val
 
 
-class ElfInt8BitMask(BitMaskMixin, ElfInt8Type, metaclass=BitMaskMeta):
-    pass
-
-
-class ElfInt16BitMask(BitMaskMixin, ElfInt16Type, metaclass=BitMaskMeta):
-    pass
-
-
-class ElfInt32BitMask(BitMaskMixin, ElfInt32Type, metaclass=BitMaskMeta):
-    pass
-
-
-class ElfInt64BitMask(BitMaskMixin, ElfInt64Type, metaclass=BitMaskMeta):
-    pass
-
-
-class ElfIntNBitMask(ElfIntNType, ElfInt64Type, metaclass=IntNBitMaskMeta):
-    pass

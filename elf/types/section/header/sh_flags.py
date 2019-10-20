@@ -1,4 +1,4 @@
-from elf.types.base.bitmask.elf_int_bitmask import ElfIntNBitMask
+from elf.types.base.bitmask.elf_int_n_bitmask import ElfIntNBitMask
 
 
 class SHFlags(ElfIntNBitMask):

@@ -1,34 +1,8 @@
+from elf.elf_phdrs import ElfPhdrs
+from elf.elf_sections import ElfSections
 from elf.types.base.elf_offset import ElfOffset
 from elf.types.header.elf_header import ELFHeader
 from elf.types.header.ident import EIClass
-from elf.types.section import ElfSectionHeader
-
-
-class ElfSections(object):
-    def __init__(self, elf):
-        self.elf = elf
-
-    def _get_section_by_index(self, index) -> ElfSectionHeader:
-        offset = int(self.elf.header.e_shoff.data) + int(self.elf.header.e_shentsize.data) * int(index)
-        return ElfSectionHeader(self.elf, offset)
-
-    def __getitem__(self, item) -> ElfSectionHeader:
-        if isinstance(item, bytes):
-            for sec in self:
-                if bytes(sec.sh_name) == item:
-                    return sec
-            else:
-                raise KeyError()
-        else:
-            return self._get_section_by_index(item)
-
-    def __getattr__(self, item):
-        assert False
-
-    def __iter__(self):
-        count = self.elf.header.e_shnum
-        for i in range(int(count)):
-            yield self._get_section_by_index(i)
 
 
 class ELF(object):
@@ -45,8 +19,9 @@ class ELF(object):
     def sections(self) -> ElfSections:
         return ElfSections(self)
 
-    def phdrs(self):
-        pass
+    @property
+    def phdrs(self) -> ElfPhdrs:
+        return ElfPhdrs(self)
 
     def raw_read(self, offset: ElfOffset, size: ElfOffset) -> bytearray:
         end_offset = offset + size
@@ -74,4 +49,3 @@ class ELF(object):
     @property
     def data(self) -> bytearray:
         return self._data
-
