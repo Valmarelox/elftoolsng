@@ -23,3 +23,7 @@ class ElfSectionHeader(ElfStruct):
     @property
     def section(self) -> ElfSection:
         return construct_elf_section(self)
+
+    def __lt__(self, other):
+        assert isinstance(other, ElfSectionHeader)
+        return self.sh_name < other.sh_name

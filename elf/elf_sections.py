@@ -36,3 +36,4 @@ class ElfSections(object):
 
     def __repr__(self):
         return f'<Section header table size={self.elf.header.e_shnum}>'
+

@@ -2,8 +2,9 @@ from __future__ import annotations
 from elf.types.base.elf_offset import ElfOffset
 from elf.types.base.elf_type_base import ElfTypeBase
 
-
 class ElfSection(ElfTypeBase):
+    TYPE: int = None
+
     def __init__(self, parent, header: 'ElfSectionHeader'):
         self.parent = parent
         self.elf = parent.elf

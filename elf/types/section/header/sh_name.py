@@ -10,6 +10,8 @@ class SHName(ElfInt32Type):
     def __eq__(self, other):
         if isinstance(other, bytes):
             return bytes(self) == other
+        elif isinstance(other, SHName):
+            return bytes(self) == bytes(other)
         else:
             return super().__eq__(other)
 
@@ -18,3 +20,11 @@ class SHName(ElfInt32Type):
 
     def __repr__(self):
         return str(self)
+
+    def __lt__(self, other):
+        if isinstance(other, bytes):
+            return bytes(self) == other
+        elif isinstance(other, SHName):
+            return bytes(self) < bytes(other)
+        else:
+            return super().__eq__(other)
