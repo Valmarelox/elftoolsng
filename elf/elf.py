@@ -1,3 +1,4 @@
+from __future__ import annotations
 from elf.elf_sections import ElfSections
 from elf.types.base.elf_offset import ElfOffset
 from elf.types.header.elf_header import ELFHeader
@@ -6,6 +7,9 @@ from elf.types.phdr.phdr import ElfProgramHeader
 
 
 class ElfPhdrs(object):
+    elf: ELF
+    __slots__ = ('elf',)
+
     def __init__(self, elf):
         self.elf = elf
 
@@ -23,6 +27,9 @@ class ElfPhdrs(object):
 
 
 class ELF(object):
+    _data: bytearray
+    __slots__ = ('_data',)
+
     def __init__(self, data: bytes):
         super(ELF, self).__init__()
         self._data = bytearray(data)
@@ -47,9 +54,9 @@ class ELF(object):
     def raw_write(self, offset: ElfOffset, data: bytearray):
         self._data[offset.calc(self): offset.calc(self) + len(data)] = data
 
-    def raw_read_string(self, offset):
-        read_end = self._data.find(b'\x00', offset.calc(self))
-        return self.raw_read(offset, ElfOffset(read_end) - offset)
+    #def raw_read_string(self, offset):
+    #    read_end = self._data.find(b'\x00', offset.calc(self))
+    #    return self.raw_read(offset, ElfOffset(read_end) - offset)
 
     @property
     def header(self) -> ELFHeader:
@@ -60,7 +67,7 @@ class ELF(object):
         return ElfOffset(0)
 
     @property
-    def elf(self):
+    def elf(self) -> ELF:
         return self
 
     @property

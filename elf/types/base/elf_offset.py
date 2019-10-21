@@ -1,4 +1,6 @@
 class ElfOffset(object):
+    __slots__ = ('base', 'dynamic')
+
     def __init__(self, base=0, dynamic=0):
         if isinstance(base, ElfOffset):
             self.base = base.base
@@ -7,7 +9,7 @@ class ElfOffset(object):
             self.base = base
             self.dynamic = dynamic
 
-    def calc(self, elf):
+    def calc(self, elf: 'ELF') -> int:
         return (8 if elf.is64bit else 4) * self.dynamic + self.base
 
     def __add__(self, other):

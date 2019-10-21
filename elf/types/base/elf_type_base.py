@@ -1,22 +1,25 @@
+from __future__ import annotations
 import struct
-
 from elf.types.base.elf_offset import ElfOffset
 
 
 class ElfTypeBase(object):
+    offset: ElfOffset
+    elf: 'ELF'
     STRUCT = ''
+    __slots__ = ('parent', 'elf', 'offset')
 
     def __init__(self, parent, offset):
         self.parent = parent
         self.elf = self.parent.elf
         self.offset = offset
 
-    def raw_read(self):
-        return self.elf.raw_read(self.offset, self.size())
+    def raw_read(self) -> bytearray:
+        return self.elf.raw_read(self.offset, len(self))
 
     def raw_write(self, data):
         assert data is bytearray or data is bytes
-        return self.elf.raw_write(self.offset, self.size())
+        self.elf.raw_write(self.offset, data)
 
     @property
     def data(self):
@@ -28,7 +31,7 @@ class ElfTypeBase(object):
             x = x[0]
         return x
 
-    def verify(self, *args):
+    def verify(self, *args) -> bool:
         return True
 
     def __eq__(self, other):
@@ -38,7 +41,7 @@ class ElfTypeBase(object):
             return self.data == other
 
     @property
-    def valid(self):
+    def valid(self) -> bool:
         return self.verify(self.data)
 
     @data.setter
@@ -51,6 +54,12 @@ class ElfTypeBase(object):
     def size(cls) -> ElfOffset:
         return ElfOffset(struct.calcsize(cls.STRUCT))
 
+    def __len__(self) -> int:
+        return self.size().calc(self.elf)
+
     def __repr__(self):
         # return pformat({'Name': type(self).__name__, 'data': self.data})
         return str(self.data)
+
+    def __hash__(self):
+        return hash(self.data)

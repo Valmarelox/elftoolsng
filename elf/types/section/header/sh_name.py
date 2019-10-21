@@ -5,9 +5,7 @@ from elf.types.base.elf_offset import ElfOffset
 # TODO: Generify to ElfStringType
 class SHName(ElfInt32Type):
     def __bytes__(self):
-        shstrtab_offset = self.elf.sections[self.elf.header.e_shstrndx].sh_offset
-        offset = ElfOffset(int(shstrtab_offset) + int(self.data))
-        return bytes(self.elf.raw_read_string(offset))
+        return self.elf.sections[self.elf.header.e_shstrndx].section.read_string(ElfOffset(int(self)))
 
     def __eq__(self, other):
         if isinstance(other, bytes):

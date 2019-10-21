@@ -1,7 +1,10 @@
+from __future__ import annotations
 from elf.types.base.struct import ElfStruct
 from elf.types.base.struct import ElfStructProperty as ESP
 from elf.types.section.header import SHName, SHType, SHFlags, SHAddr, SHOffset, SHSize, SHLink, SHInfo, SHAddrAlign, \
     SHEntSize
+from elf.types.section.types.builder import construct_elf_section
+from elf.types.section.types.section_base import ElfSection
 
 
 class ElfSectionHeader(ElfStruct):
@@ -17,3 +20,6 @@ class ElfSectionHeader(ElfStruct):
         ESP('sh_addralign', SHAddrAlign),
         ESP('sh_entsize', SHEntSize),
     ]
+    @property
+    def section(self) -> ElfSection:
+        return construct_elf_section(self)

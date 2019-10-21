@@ -2,6 +2,11 @@ from elf.types.base.elf_offset import ElfOffset
 
 
 class ElfMeta(type):
+    def __new__(cls, name, bases, dctn):
+        if 'PROPERTIES' in dctn:
+            dctn['__slots__'] = tuple(map(lambda prop: prop.name, dctn['PROPERTIES']))
+        return super().__new__(cls, name, bases, dctn)
+
     def __call__(cls, *args, **kwargs):
         def make_generic_getter(t, offset):
             def _generic_getter(self):

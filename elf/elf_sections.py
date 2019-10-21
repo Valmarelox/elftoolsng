@@ -1,7 +1,14 @@
+from __future__ import annotations
+
+from typing import Iterator
+
 from elf.types.section import ElfSectionHeader
 
 
 class ElfSections(object):
+    elf: 'ELF'
+    __slots__ = ('elf',)
+
     def __init__(self, elf):
         self.elf = elf
 
@@ -24,7 +31,7 @@ class ElfSections(object):
     def __getattr__(self, item):
         assert False
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[ElfSectionHeader]:
         count = self.elf.header.e_shnum
         for i in range(int(count)):
             yield self._get_section_by_index(i)
