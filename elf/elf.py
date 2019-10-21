@@ -1,4 +1,6 @@
 from __future__ import annotations
+
+from elf.data_driver import build_driver, BaseDriver
 from elf.elf_sections import ElfSections
 from elf.types.base import ElfOffset
 from elf.types.header.elf_header import ELFHeader
@@ -27,17 +29,16 @@ class ElfPhdrs(object):
 
 
 class ELF(object):
-    _data: bytearray
-    __slots__ = ('_data',)
+    _driver: BaseDriver
 
-    def __init__(self, data: bytes):
+    def __init__(self, obj):
         super(ELF, self).__init__()
-        self._data = bytearray(data)
+        self._driver = build_driver(obj)
 
     @property
     def is64bit(self) -> bool:
         # TODO: Hack to prevent recursions
-        return ord(self._data[4:5]) == EIClass.ELFCLASS64
+        return ord(self._driver.read(4, 1)) == EIClass.ELFCLASS64
 
     @property
     def sections(self) -> ElfSections:
@@ -48,15 +49,10 @@ class ELF(object):
         return ElfPhdrs(self)
 
     def raw_read(self, offset: ElfOffset, size: ElfOffset) -> bytearray:
-        end_offset = offset + size
-        return self._data[offset.calc(self): end_offset.calc(self)]
+        return self._driver.read(offset.calc(self), size.calc(self))
 
     def raw_write(self, data: bytearray, offset: ElfOffset):
-        self._data[offset.calc(self): offset.calc(self) + len(data)] = data
-
-    #def raw_read_string(self, offset):
-    #    read_end = self._data.find(b'\x00', offset.calc(self))
-    #    return self.raw_read(offset, ElfOffset(read_end) - offset)
+        self._driver.write(data, offset.calc(self))
 
     @property
     def header(self) -> ELFHeader:
@@ -72,4 +68,4 @@ class ELF(object):
 
     @property
     def data(self) -> bytearray:
-        return self._data
+        return self._driver.data

@@ -20,3 +20,13 @@ def test_elf_magic(binary, valid):
 @pytest.mark.parametrize('binary,arch', ((arm_binary(), EMachine.EM_ARM),))
 def test_elf_machine(binary, arch):
     assert binary.header.e_machine == arch
+
+
+@pytest.mark.parametrize('binary,arch', ((arm_binary(), EMachine.EM_ARM),))
+def test_edit_machine_arch(binary, arch):
+    assert binary.header.e_machine == arch
+    assert arch != EMachine.EM_MIPS
+    binary.header.e_machine = EMachine.EM_MIPS
+    assert binary.header.e_machine == EMachine.EM_MIPS
+    binary.header.e_machine = arch
+    assert binary.header.e_machine == arch

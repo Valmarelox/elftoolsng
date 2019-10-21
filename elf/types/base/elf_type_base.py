@@ -20,7 +20,8 @@ class ElfTypeBase(object):
         return self.parent.raw_read(self.offset + offset, size=size)
 
     def raw_write(self, data, offset=0):
-        assert data is bytearray or data is bytes
+        assert isinstance(data, bytearray) or isinstance(data, bytes), f'Got {type(data).__name__} instead of ' \
+                                                                       f'bytes/bytearray '
         self.parent.raw_write(data, self.offset + offset)
 
     @property

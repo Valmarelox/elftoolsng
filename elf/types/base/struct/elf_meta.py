@@ -14,16 +14,16 @@ class ElfMeta(type):
 
             return _generic_getter
 
-        def make_generic_setter(offset):
+        def make_generic_setter(t, offset):
             def _generic_setter(self, data):
-                self.elf.raw_write(offset, data)
+                t(self, offset).data = data
 
             return _generic_setter
 
         curr_offset = ElfOffset(0)
         for index, prop in enumerate(cls.PROPERTIES):
             getter = make_generic_getter(prop.type, curr_offset)
-            setter = make_generic_setter(curr_offset)
+            setter = make_generic_setter(prop.type, curr_offset)
             setattr(cls, prop.name, property(getter,
                                              setter))
             curr_offset += prop.type.size()
