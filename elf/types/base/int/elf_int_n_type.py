@@ -1,8 +1,9 @@
 from elf.types.base.int.arch_int_meta_class import ArchIntMetaClass
 from elf.types.base.elf_offset import ElfOffset
+from elf.types.base.int.int_base_mixin import IntMixin
 
 
-class ElfIntNType(metaclass=ArchIntMetaClass):
+class ElfIntNType(IntMixin, metaclass=ArchIntMetaClass):
     STRUCT = 'X'
 
     @classmethod

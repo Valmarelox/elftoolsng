@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import Iterator
 
+from elf.types.base.elf_offset import ElfOffset
 from elf.types.section import ElfSectionHeader
 
 
@@ -16,7 +17,7 @@ class ElfSections(object):
         if int(index) >= int(self.elf.header.e_shnum):
             raise KeyError(f'Index {int(index)} is bigger than section count: {int(self.elf.header.e_shnum)}')
         offset = int(self.elf.header.e_shoff.data) + int(self.elf.header.e_shentsize.data) * int(index)
-        return ElfSectionHeader(self.elf, offset)
+        return ElfSectionHeader(self.elf, ElfOffset(offset))
 
     def __getitem__(self, item) -> ElfSectionHeader:
         if isinstance(item, bytes):

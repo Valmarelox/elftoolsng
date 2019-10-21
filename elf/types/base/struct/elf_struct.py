@@ -34,3 +34,7 @@ class ElfStruct(ElfTypeBase, metaclass=ElfMeta):
     @classmethod
     def size(cls):
         return sum((prop.type.size() for prop in cls.PROPERTIES), ElfOffset())
+
+    @property
+    def data(self):
+        return self.raw_read()
