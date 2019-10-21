@@ -1,14 +1,47 @@
 from typing import Iterator
 
 from elf.types.base.elf_offset import ElfOffset
+from elf.types.base.elf_type_base import ElfTypeBase
 from elf.types.section.types.section_base import ElfSection
 
 
-class StringTableSection(ElfSection):
+class ElfString(ElfTypeBase):
+    STRUCT = ''
+    parent: 'StringTableSection'
 
+    def __init__(self, parent, offset):
+        super().__init__(parent, offset)
+        assert self.valid
+
+    @classmethod
+    def size(cls):
+        raise NotImplementedError(f'{cls.__name__} Has no static length')
+
+    def __len__(self) -> int:
+        end = self.parent.data.find(b'\x00', self.offset.calc(self.elf))
+        if end == -1:
+            raise BufferError(f'No string found at offset {self.offset.calc(self.elf)}')
+        return end + 1 - self.offset.calc(self.elf)
+
+    @property
+    def data(self):
+        return bytes(self.raw_read())
+
+    @data.setter
+    def data(self, _data: bytes):
+        self.raw_write(_data)
+
+    def verify(self, data) -> bool:
+        return isinstance(data, bytes)
+
+    def __bytes__(self):
+        return self.data
+
+
+class StringTableSection(ElfSection):
     def __iter__(self) -> Iterator[bytes]:
         offset = 0
-        end = (self.offset + len(self)).calc(self.elf)
+        end = len(self)
         while offset < end:
             try:
                 s = self.read_string(offset)
@@ -17,8 +50,5 @@ class StringTableSection(ElfSection):
             yield s
             offset += (len(s) + 1)
 
-    def read_string(self, start_offset: int) -> bytes:
-        end_offset = self.data.find(b'\x00', start_offset, len(self))
-        if end_offset == -1:
-            raise BufferError(f'No string found at offset {start_offset}')
-        return bytes(self.data[start_offset: end_offset])
+    def read_string(self, start_offset: int) -> ElfString:
+        return ElfString(self, ElfOffset(start_offset))

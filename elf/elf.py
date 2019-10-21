@@ -51,7 +51,7 @@ class ELF(object):
         end_offset = offset + size
         return self._data[offset.calc(self): end_offset.calc(self)]
 
-    def raw_write(self, offset: ElfOffset, data: bytearray):
+    def raw_write(self, data: bytearray, offset: ElfOffset):
         self._data[offset.calc(self): offset.calc(self) + len(data)] = data
 
     #def raw_read_string(self, offset):

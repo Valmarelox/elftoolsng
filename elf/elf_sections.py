@@ -29,9 +29,6 @@ class ElfSections(object):
         else:
             return self._get_section_by_index(item)
 
-    def __getattr__(self, item):
-        assert False
-
     def __iter__(self) -> Iterator[ElfSectionHeader]:
         count = self.elf.header.e_shnum
         for i in range(int(count)):

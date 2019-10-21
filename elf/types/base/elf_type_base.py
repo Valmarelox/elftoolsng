@@ -14,12 +14,14 @@ class ElfTypeBase(object):
         self.elf = self.parent.elf
         self.offset = offset
 
-    def raw_read(self) -> bytearray:
-        return self.elf.raw_read(self.offset, len(self))
+    def raw_read(self, offset=ElfOffset(0), size=None) -> bytearray:
+        if size is None:
+            size = ElfOffset(len(self))
+        return self.parent.raw_read(self.offset + offset, size=size)
 
-    def raw_write(self, data):
+    def raw_write(self, data, offset=0):
         assert data is bytearray or data is bytes
-        self.elf.raw_write(self.offset, data)
+        self.parent.raw_write(data, self.offset + offset)
 
     @property
     def data(self):

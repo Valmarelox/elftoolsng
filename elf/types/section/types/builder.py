@@ -9,6 +9,6 @@ def construct_elf_section(header: 'ElfSectionHeader'):
         SHType.SHT_STRTAB: StringTableSection
     }
     if header.sh_type in supported_types:
-        return supported_types[header.sh_type](header)
+        return supported_types[header.sh_type](header.parent, header)
     else:
-        return ElfSection(header)
+        return ElfSection(header.parent, header)

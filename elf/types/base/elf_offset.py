@@ -6,8 +6,8 @@ class ElfOffset(object):
             self.base = base.base
             self.dynamic = base.dynamic
         else:
-            self.base = base
-            self.dynamic = dynamic
+            self.base = int(base)
+            self.dynamic = int(dynamic)
 
     def calc(self, elf: 'ELF') -> int:
         return (8 if elf.is64bit else 4) * self.dynamic + self.base
@@ -26,3 +26,7 @@ class ElfOffset(object):
 
     def __repr__(self):
         return f'<ElfOffset base:{self.base} dynamic: {self.dynamic}>'
+
+    def __int__(self):
+        if self.dynamic != 0:
+            raise RuntimeError(f'Cannot convert dynamic offset to int, use {type(self).__name__}.{self.calc.__name__}')

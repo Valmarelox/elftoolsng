@@ -20,8 +20,8 @@ class ElfMeta(type):
 
             return _generic_setter
 
-        start_offset = args[1]
-        curr_offset = ElfOffset(start_offset)
+        #start_offset = args[1]
+        curr_offset = ElfOffset(0)
         for index, prop in enumerate(cls.PROPERTIES):
             getter = make_generic_getter(prop.type, curr_offset)
             setter = make_generic_setter(curr_offset)

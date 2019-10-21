@@ -4,16 +4,20 @@ from elf.types.base.elf_type_base import ElfTypeBase
 
 
 class ElfSection(ElfTypeBase):
-    def __init__(self, parent: 'ElfSectionHeader'):
+    def __init__(self, parent, header: 'ElfSectionHeader'):
         self.parent = parent
         self.elf = parent.elf
+        self.header = header
 
     def size(self) -> ElfOffset:
-        return ElfOffset(int(self.parent.sh_size))
+        return ElfOffset(int(self.header.sh_size))
+
+    def __len__(self):
+        return int(self.header.sh_size)
 
     @property
     def offset(self) -> ElfOffset:
-        return ElfOffset(int(self.parent.sh_offset))
+        return ElfOffset(int(self.header.sh_offset))
 
     @property
     def end_offset(self) -> ElfOffset:
@@ -21,7 +25,7 @@ class ElfSection(ElfTypeBase):
 
     @property
     def name(self):
-        return str(self.parent.sh_name)
+        return str(self.header.sh_name)
 
     @property
     def data(self) -> bytearray:
