@@ -34,6 +34,8 @@ class ELF(object):
     def __init__(self, obj):
         super(ELF, self).__init__()
         self._driver = build_driver(obj)
+        if not self.header.e_ident.ei_magic.valid:
+            raise ValueError(f'data is not a valid ELF file!')
 
     @property
     def is64bit(self) -> bool:
@@ -69,3 +71,7 @@ class ELF(object):
     @property
     def data(self) -> bytearray:
         return self._driver.data
+
+    def __repr__(self):
+        return f'<Elf arch={self.header.e_machine} endianess={self.header.e_ident.ei_data} wordsize=' \
+               f'{self.header.e_ident.ei_data}>'
