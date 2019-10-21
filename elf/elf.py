@@ -1,6 +1,6 @@
 from __future__ import annotations
 from elf.elf_sections import ElfSections
-from elf.types.base.elf_offset import ElfOffset
+from elf.types.base import ElfOffset
 from elf.types.header.elf_header import ELFHeader
 from elf.types.header.ident import EIClass
 from elf.types.phdr.phdr import ElfProgramHeader

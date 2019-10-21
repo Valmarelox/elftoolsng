@@ -1,9 +1,11 @@
 from __future__ import annotations
-from elf.types.base.elf_offset import ElfOffset
-from elf.types.base.elf_type_base import ElfTypeBase
+from elf.types.base import ElfOffset
+from elf.types.base import ElfTypeBase
+
 
 class ElfSection(ElfTypeBase):
     TYPE: int = None
+    NAME: bytes = None
 
     def __init__(self, parent, header: 'ElfSectionHeader'):
         self.parent = parent
@@ -30,11 +32,11 @@ class ElfSection(ElfTypeBase):
 
     @property
     def data(self) -> bytearray:
-        return self.raw_read()
+        return self.raw
 
     @data.setter
     def data(self, new_data: bytearray):
-        self.raw_write(new_data)
+        self.raw = new_data
 
     def __repr__(self):
         return f'<{type(self).__name__} \'{self.name}\' size={len(self)}>'

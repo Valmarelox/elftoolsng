@@ -10,17 +10,19 @@ from elf.types.header.ident.e_ident import EIdent
 
 
 class ELFHeader(ElfStruct):
-    PROPERTIES = [ESP('e_ident', EIdent),
-                  ESP('e_type', EType),
-                  ESP('e_machine', EMachine),
-                  ESP('e_version', EVersion),
-                  ESP('e_entry', ElfIntNType),
-                  ESP('e_phoff', ElfIntNType),
-                  ESP('e_shoff', ElfIntNType),
-                  ESP('e_flags', ElfInt32Type),
-                  ESP('e_ehsize', ElfInt16Type),
-                  ESP('e_phentsize', ElfInt16Type),
-                  ESP('e_phnum', ElfInt16Type),
-                  ESP('e_shentsize', ElfInt16Type),
-                  ESP('e_shnum', ElfInt16Type),
-                  ESP('e_shstrndx', ElfInt16Type)]
+    PROPERTIES = (
+        ESP('e_ident', EIdent),
+        ESP('e_type', EType),
+        ESP('e_machine', EMachine),
+        ESP('e_version', EVersion),
+        ESP('e_entry', ElfIntNType),
+        ESP('e_phoff', ElfIntNType),
+        ESP('e_shoff', ElfIntNType),
+        ESP('e_flags', ElfInt32Type),
+        ESP('e_ehsize', ElfInt16Type),
+        ESP('e_phentsize', ElfInt16Type),
+        ESP('e_phnum', ElfInt16Type),
+        ESP('e_shentsize', ElfInt16Type),
+        ESP('e_shnum', ElfInt16Type),
+        ESP('e_shstrndx', ElfInt16Type)
+    )

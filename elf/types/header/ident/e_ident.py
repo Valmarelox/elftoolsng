@@ -4,10 +4,12 @@ from elf.types.header.ident import EIMagic, EIClass, EIData, EIVersion, EIOSAbi,
 
 
 class EIdent(ElfStruct):
-    PROPERTIES = [ESP('ei_magic', EIMagic),
-                  ESP('ei_class', EIClass),
-                  ESP('ei_data', EIData),
-                  ESP('ei_version', EIVersion),
-                  ESP('ei_osabi', EIOSAbi),
-                  ESP('ei_abiversion', EIAbiVersion),
-                  ESP('ei_pad', EIPad)]
+    PROPERTIES = (
+        ESP('ei_magic', EIMagic),
+        ESP('ei_class', EIClass),
+        ESP('ei_data', EIData),
+        ESP('ei_version', EIVersion),
+        ESP('ei_osabi', EIOSAbi),
+        ESP('ei_abiversion', EIAbiVersion),
+        ESP('ei_pad', EIPad)
+    )

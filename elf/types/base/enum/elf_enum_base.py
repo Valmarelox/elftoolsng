@@ -1,4 +1,4 @@
-from elf.types.base.elf_type_base import ElfTypeBase
+from elf.types.base import ElfTypeBase
 
 
 class EnumValuesMeta(type):
@@ -29,5 +29,7 @@ class EnumMixin(ElfTypeBase):
     def __repr__(self):
         try:
             return self.VALUES[self.data]
+        except IndexError:
+            raise KeyError(f'Value {self.data} not found in {type(self).__name__}')
         except KeyError:
-            raise KeyError(f'Value {self.data} not found in {self.VALUES}')
+            raise KeyError(f'Value {self.data} not found in {type(self).__name__}')

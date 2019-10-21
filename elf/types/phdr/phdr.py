@@ -6,7 +6,7 @@ from elf.types.phdr.header import PFlags, PType
 
 
 class ElfProgramHeader32(ElfStruct):
-    PROPERTIES = [
+    PROPERTIES = (
         ESP('p_type', PType),
         ESP('p_offset', ElfInt32Type),
         ESP('p_vaddr', ElfInt32Type),
@@ -15,11 +15,11 @@ class ElfProgramHeader32(ElfStruct):
         ESP('p_memsz', ElfInt32Type),
         ESP('p_flags', PFlags),
         ESP('p_align', ElfInt32Type)
-    ]
+    )
 
 
 class ElfProgramHeader64(ElfStruct):
-    PROPERTIES = [
+    PROPERTIES = (
         ESP('p_type', PType),
         ESP('p_flags', PFlags),
         ESP('p_offset', ElfInt64Type),
@@ -28,7 +28,7 @@ class ElfProgramHeader64(ElfStruct):
         ESP('p_filesz', ElfInt64Type),
         ESP('p_memsz', ElfInt64Type),
         ESP('p_align', ElfInt64Type)
-    ]
+    )
 
 
 class ElfProgramHeaderMeta(ElfMeta):

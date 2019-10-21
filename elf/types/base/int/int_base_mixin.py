@@ -1,4 +1,4 @@
-from elf.types.base.elf_type_base import ElfTypeBase
+from elf.types.base import ElfTypeBase
 
 
 class IntMixin(ElfTypeBase):

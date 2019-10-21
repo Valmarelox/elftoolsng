@@ -1,4 +1,7 @@
 class ElfOffset(object):
+    """
+    Represents an offset that is dependant on the architecture on the ELF (ELFCLASS32/ELFCLASS64)
+    """
     __slots__ = ('base', 'dynamic')
 
     def __init__(self, base=0, dynamic=0):

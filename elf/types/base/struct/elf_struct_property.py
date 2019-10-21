@@ -1,3 +1,6 @@
+from elf.types.base import ElfTypeBase
+
+
 class ElfStructProperty(object):
     def __init__(self, name: str, cls: type):
         super(ElfStructProperty, self).__init__()

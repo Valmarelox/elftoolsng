@@ -1,4 +1,4 @@
-from elf.types.base.elf_offset import ElfOffset
+from elf.types.base import ElfOffset
 
 
 class ElfMeta(type):
@@ -7,7 +7,7 @@ class ElfMeta(type):
             dctn['__slots__'] = tuple(map(lambda prop: prop.name, dctn['PROPERTIES']))
         return super().__new__(cls, name, bases, dctn)
 
-    def __call__(cls, *args, **kwargs):
+    def __init__(cls, *args, **kwargs):
         def make_generic_getter(t, offset):
             def _generic_getter(self):
                 return t(self, offset)
@@ -20,7 +20,6 @@ class ElfMeta(type):
 
             return _generic_setter
 
-        #start_offset = args[1]
         curr_offset = ElfOffset(0)
         for index, prop in enumerate(cls.PROPERTIES):
             getter = make_generic_getter(prop.type, curr_offset)
@@ -29,4 +28,4 @@ class ElfMeta(type):
                                              setter))
             curr_offset += prop.type.size()
 
-        return super().__call__(*args, **kwargs)
+        super().__init__(*args, **kwargs)

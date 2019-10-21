@@ -1,4 +1,4 @@
-from elf.types.base.bitmask.elf_int_bitmask import BitMaskMixin, BitMaskMeta
+from .elf_int_bitmask import BitMaskMixin, BitMaskMeta
 from elf.types.base.int import ElfInt8Type
 
 

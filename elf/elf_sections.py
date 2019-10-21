@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Iterator
 
-from elf.types.base.elf_offset import ElfOffset
+from elf.types.base import ElfOffset
 from elf.types.section import ElfSectionHeader
 
 
@@ -15,7 +15,7 @@ class ElfSections(object):
 
     def _get_section_by_index(self, index) -> ElfSectionHeader:
         if int(index) >= int(self.elf.header.e_shnum):
-            raise KeyError(f'Index {int(index)} is bigger than section count: {int(self.elf.header.e_shnum)}')
+            raise KeyError(f'Index {int(index)} is out of section table (size={int(self.elf.header.e_shnum)})')
         offset = int(self.elf.header.e_shoff.data) + int(self.elf.header.e_shentsize.data) * int(index)
         return ElfSectionHeader(self.elf, ElfOffset(offset))
 
@@ -25,9 +25,12 @@ class ElfSections(object):
                 if bytes(sec.sh_name) == item:
                     return sec
             else:
-                raise KeyError()
+                raise KeyError(f'{item} not found in section table')
         else:
-            return self._get_section_by_index(item)
+            try:
+                return self._get_section_by_index(item)
+            except ValueError:
+                raise KeyError(f'{item} is of a wrong type ({type(item).__name__}')
 
     def __iter__(self) -> Iterator[ElfSectionHeader]:
         count = self.elf.header.e_shnum

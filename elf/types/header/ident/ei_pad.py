@@ -1,4 +1,4 @@
-from elf.types.base.elf_type_bytes import ElfTypeBytes
+from elf.types.base.bytes import ElfTypeBytes
 
 
 class EIPad(ElfTypeBytes(7)):
