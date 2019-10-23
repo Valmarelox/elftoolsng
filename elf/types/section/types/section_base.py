@@ -40,3 +40,10 @@ class ElfSection(ElfTypeBase):
 
     def __repr__(self):
         return f'<{type(self).__name__} \'{self.name}\' size={len(self)}>'
+
+    def __del__(self):
+        # TODO: Delete section's data
+        # TODO: Delete from section headers list
+        # TODO: Fix all section offsets in section header list
+        # TODO: Fix all sections indexi (symbol tables, e_shstrndx, dynamic symbol tables)
+        raise NotImplementedError()

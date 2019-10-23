@@ -43,11 +43,11 @@ class STBind(ElfInt8Enum):
 class STInfo(ElfInt8Type):
 
     @property
-    def bind(self):
+    def bind(self) -> STBind:
         return STBind(self, 0)
 
     @property
-    def type(self):
+    def type(self) -> STType:
         return STType(self, 0)
 
     def __repr__(self):

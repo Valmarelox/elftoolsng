@@ -1,35 +1,16 @@
 from __future__ import annotations
 
 from elf.data_driver import build_driver, BaseDriver
+from elf.elf_phrs import ElfPhdrs
 from elf.elf_sections import ElfSections
 from elf.types.base import ElfOffset
 from elf.types.header.elf_header import ELFHeader
 from elf.types.header.ident import EIClass
-from elf.types.phdr.phdr import ElfProgramHeader
-
-
-class ElfPhdrs(object):
-    elf: ELF
-    __slots__ = ('elf',)
-
-    def __init__(self, elf):
-        self.elf = elf
-
-    def _get_section_by_index(self, index) -> ElfProgramHeader:
-        if int(index) >= int(self.elf.header.e_phnum):
-            raise KeyError(f'Index {int(index)} is bigger than section count: {int(self.elf.header.e_phnum)}')
-        offset = int(self.elf.header.e_phoff.data) + int(self.elf.header.e_phentsize.data) * int(index)
-        return ElfProgramHeader(self.elf, offset)
-
-    def __getitem__(self, item) -> ElfProgramHeader:
-        return self._get_section_by_index(item)
-
-    def __repr__(self):
-        return f'<Phdr table size={self.elf.header.e_phnum}>'
 
 
 class ELF(object):
     _driver: BaseDriver
+    __slots__ = ('_driver',)
 
     def __init__(self, obj):
         super(ELF, self).__init__()
@@ -44,10 +25,16 @@ class ELF(object):
 
     @property
     def sections(self) -> ElfSections:
+        """
+        Elf's Sections
+        """
         return ElfSections(self)
 
     @property
     def phdrs(self) -> ElfPhdrs:
+        """
+        Elf's Program Headers
+        """
         return ElfPhdrs(self)
 
     def raw_read(self, offset: ElfOffset, size: ElfOffset) -> bytearray:
@@ -58,6 +45,9 @@ class ELF(object):
 
     @property
     def header(self) -> ELFHeader:
+        """
+        Elf's Header (struct EHdr)
+        """
         return ELFHeader(self, self.offset)
 
     @property

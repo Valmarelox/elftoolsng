@@ -5,10 +5,6 @@ class ElfString(ElfTypeBase):
     STRUCT = ''
     parent: 'StringTableSection'
 
-    def __init__(self, parent, offset):
-        super().__init__(parent, offset)
-        assert self.valid
-
     @classmethod
     def size(cls):
         raise NotImplementedError(f'{cls.__name__} Has no static length')
