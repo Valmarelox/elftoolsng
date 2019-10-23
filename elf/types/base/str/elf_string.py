@@ -42,5 +42,3 @@ class ElfString(ElfTypeBase):
 
     def __eq__(self, other):
         return bytes(self) == bytes(other)
-    #def __eq__(self, other):
-    #return bytes(self) == other or bytes(self)[:len(self) - 1] == other

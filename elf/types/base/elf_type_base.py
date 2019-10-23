@@ -10,9 +10,13 @@ class ElfTypeBase(object):
     __slots__ = ('parent', 'elf', 'offset')
 
     def __init__(self, parent, offset):
+        """
+        :param parent: This object parent
+        :param offset: offset from the start of the parent's data
+        """
         self.parent = parent
         self.elf = self.parent.elf
-        self.offset = offset
+        self.offset = ElfOffset(offset)
 
     def raw_read(self, offset: ElfOffset = ElfOffset(0), size: ElfOffset = None) -> bytearray:
         if size is None:

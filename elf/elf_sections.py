@@ -14,7 +14,7 @@ class ElfSections(object):
         self.elf = elf
 
     def _get_section_by_index(self, index) -> ElfSectionHeader:
-        if int(index) >= int(self.elf.header.e_shnum):
+        if int(index) >= len(self):
             raise KeyError(f'Index {int(index)} is out of section table (size={int(self.elf.header.e_shnum)})')
         offset = int(self.elf.header.e_shoff.data) + int(self.elf.header.e_shentsize.data) * int(index)
         return ElfSectionHeader(self.elf, ElfOffset(offset))
@@ -40,3 +40,9 @@ class ElfSections(object):
     def __repr__(self):
         return f'<Section header table size={self.elf.header.e_shnum}>'
 
+    def __contains__(self, item):
+        assert isinstance(item, bytes)
+        return item in map(lambda section: section.sh_name, self)
+
+    def __len__(self):
+        return int(self.elf.header.e_shnum)
